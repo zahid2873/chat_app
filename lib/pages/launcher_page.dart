@@ -1,4 +1,8 @@
+import 'package:chat_app/pages/profile_page.dart';
 import 'package:flutter/material.dart';
+
+import '../auth/firebase_auth.dart';
+import 'login_page.dart';
 
 class LauncherPage extends StatefulWidget {
   static const String routeName = '/launcher';
@@ -10,7 +14,25 @@ class LauncherPage extends StatefulWidget {
 
 class _LauncherPageState extends State<LauncherPage> {
   @override
+  void initState() {
+
+    Future.delayed(Duration.zero,(){
+      if(AuthService.user==null){
+        Navigator.pushReplacementNamed(context, LoginPage.routeName);
+      }
+      else{
+        Navigator.pushReplacementNamed(context, ProfilePage.routeName);
+      }
+    });
+
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
   }
 }
