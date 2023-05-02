@@ -1,6 +1,9 @@
+import 'package:chat_app/models/user_model.dart';
 import 'package:chat_app/pages/profile_page.dart';
+import 'package:chat_app/providers/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../auth/firebase_auth.dart';
 
@@ -134,6 +137,13 @@ class _LoginPageState extends State<LoginPage> {
         else {
           status =
           await AuthService.register(emailController.text, passController.text);
+          final userModel = UserModel(
+              uid: AuthService.user!.uid,
+              email: AuthService.user!.email!);
+          if(mounted){
+            await Provider.of<UserProvider>(context,listen: false).addUser(userModel);
+            Navigator.pushReplacementNamed(context, ProfilePage.routeName);
+          }
 
         }
         if (status) {
