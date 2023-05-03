@@ -12,9 +12,10 @@ void main() async {
   await Firebase.initializeApp();
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider(create: (_)=>UserProvider()),
+      ChangeNotifierProvider(create: (_) => UserProvider()),
     ],
-      child: const MyApp()));
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

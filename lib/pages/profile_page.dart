@@ -1,6 +1,8 @@
 import 'package:chat_app/auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'login_page.dart';
+
 class ProfilePage extends StatefulWidget {
   static const String routeName = '/profile';
 
@@ -19,6 +21,7 @@ class _ProfilePageState extends State<ProfilePage> {
         actions: [
           IconButton(onPressed: (){
             AuthService.logOut();
+            Navigator.pushNamed(context, LoginPage.routeName);
           }, icon: Icon(Icons.logout))
         ],
       ),

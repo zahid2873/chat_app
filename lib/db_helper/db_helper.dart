@@ -6,7 +6,8 @@ import '../models/user_model.dart';
 class DbHelper{
   static const String _collectionUser = 'Users';
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
-  static Future<void> addUser (UserModel userModel ){
+
+  static Future<void> addUser(UserModel userModel) {
     final doc = _db.collection(_collectionUser).doc(userModel.uid);
     return doc.set(userModel.toMap());
   }

@@ -4,10 +4,9 @@ import 'package:flutter/material.dart';
 import '../models/user_model.dart';
 
 class UserProvider extends ChangeNotifier{
-   Future<void> addUser (UserModel userModel ){
-     return DbHelper.addUser(userModel);
-
-   }
+  Future<void> addUser(UserModel userModel) {
+    return DbHelper.addUser(userModel);
+  }
 
 
   }

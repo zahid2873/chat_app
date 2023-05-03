@@ -138,13 +138,18 @@ class _LoginPageState extends State<LoginPage> {
           status =
           await AuthService.register(emailController.text, passController.text);
           final userModel = UserModel(
-              uid: AuthService.user!.uid,
-              email: AuthService.user!.email!);
-          if(mounted){
-            await Provider.of<UserProvider>(context,listen: false).addUser(userModel);
+            uid: AuthService.user!.uid,
+            email: AuthService.user!.email!,);
+          // await Provider
+          //     .of<UserProvider>(context, listen: false)
+          //     .addUser(userModel);
+          // Navigator.pushReplacementNamed(context, ProfilePage.routeName);
+          if(mounted) {
+            await Provider
+                .of<UserProvider>(context, listen: false)
+                .addUser(userModel);
             Navigator.pushReplacementNamed(context, ProfilePage.routeName);
           }
-
         }
         if (status) {
           Navigator.pushReplacementNamed(context, ProfilePage.routeName);
@@ -153,7 +158,7 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {
           errMsg = e.message!;
         });
-     }
+      }
     }
   }
 
