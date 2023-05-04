@@ -11,5 +11,7 @@ class DbHelper{
     final doc = _db.collection(_collectionUser).doc(userModel.uid);
     return doc.set(userModel.toMap());
   }
+  static Stream<DocumentSnapshot<Map<String, dynamic>>> getUserById(String uid) =>
+      _db.collection(_collectionUser).doc(uid).snapshots();
 
 }
