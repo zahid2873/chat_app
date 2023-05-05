@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:chat_app/auth/firebase_auth.dart';
 import 'package:chat_app/providers/user_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../models/user_model.dart';
@@ -44,7 +47,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         Image.asset("images/person.png",width: 100, height: 100,fit: BoxFit.cover,):
                             Image.network(userModel.image!,width: 100, height: 100,fit: BoxFit.cover,),
                       ),
-                      ElevatedButton.icon(onPressed: (){}, icon: Icon(Icons.camera), label: Text("Update Camera")),
+                      ElevatedButton.icon(onPressed: (){
+                        _getImage();
+                      }, icon: Icon(Icons.camera), label: Text("Update Image")),
                       const Divider(color: Colors.black,height: 1,),
                       ListTile(
                         title: Text(userModel.name ?? "No Display Name"),
@@ -82,5 +87,18 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
     );
+  }
+
+  void _getImage() async {
+    final xFile = await ImagePicker().pickImage(source: ImageSource.camera, imageQuality: 75);
+
+    if(xFile !=null){
+      final downloadUrl = await Provider.of<UserProvider>(context,listen: false).updateImage(File(xFile.path));
+
+      await Provider.of<UserProvider>(context,listen: false).
+      updateProfile(AuthService.user!.uid, {'image' : downloadUrl});
+
+    }
+
   }
 }
