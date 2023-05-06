@@ -20,6 +20,13 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final txtController = TextEditingController();
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    txtController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +61,16 @@ class _ProfilePageState extends State<ProfilePage> {
                       ListTile(
                         title: Text(userModel.name ?? "No Display Name"),
                         trailing: IconButton(
-                          onPressed: (){},
+                          onPressed: (){
+                            showInputDialog(
+                              title: "Display Name",
+                              value: userModel.name,
+                              onSaved: (value){
+                                provider.updateProfile(AuthService.user!.uid,
+                                    {'name' : value});
+                              }
+                            );
+                          },
                           icon: Icon(Icons.edit),
                         ),
                       ),
@@ -68,7 +84,16 @@ class _ProfilePageState extends State<ProfilePage> {
                       ListTile(
                         title: Text(userModel.mobile ?? "No Mobile Number"),
                         trailing: IconButton(
-                          onPressed: (){},
+                          onPressed: (){
+                            showInputDialog(
+                                title: "Mobile Number",
+                                value: userModel.mobile,
+                                onSaved: (value){
+                                  provider.updateProfile(AuthService.user!.uid,
+                                      {'mobile' : value});
+                                }
+                            );
+                          },
                           icon: Icon(Icons.edit),
                         ),
                       )
@@ -101,4 +126,29 @@ class _ProfilePageState extends State<ProfilePage> {
     }
 
   }
+  showInputDialog({required String title, String? value,required Function(String) onSaved}){
+    showDialog(context: context, builder: (context)=>AlertDialog(
+      title: Text(title),
+      content: Padding(
+        padding: EdgeInsets.all(10),
+        child: TextField(
+          controller: txtController,
+          decoration: InputDecoration(
+            hintText: "Enter $title",
+          ),
+        ),
+      ),
+      actions: [
+        TextButton(onPressed: (){
+          Navigator.pop(context);
+        }, child: Text("Cancel")),
+        TextButton(onPressed: (){
+          onSaved(txtController.text);
+          Navigator.pop(context);
+        }, child: Text("Update")),
+      ],
+    ));
+
+  }
+
 }
