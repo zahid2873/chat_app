@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../models/user_model.dart';
+import '../widget/main_drawer.dart';
 import 'login_page.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -30,13 +31,14 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const MainDrawer(),
       appBar: AppBar(
-        title: Text("Profile"),
+        title: const Text("Profile"),
         actions: [
           IconButton(onPressed: (){
             AuthService.logOut();
             Navigator.pushNamed(context, LoginPage.routeName);
-          }, icon: Icon(Icons.logout))
+          }, icon: const Icon(Icons.logout))
         ],
       ),
       body: Center(
@@ -56,7 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       ElevatedButton.icon(onPressed: (){
                         _getImage();
-                      }, icon: Icon(Icons.camera), label: Text("Update Image")),
+                      }, icon: const Icon(Icons.camera), label: const Text("Update Image")),
                       const Divider(color: Colors.black,height: 1,),
                       ListTile(
                         title: Text(userModel.name ?? "No Display Name"),
@@ -71,14 +73,24 @@ class _ProfilePageState extends State<ProfilePage> {
                               }
                             );
                           },
-                          icon: Icon(Icons.edit),
+                          icon: const Icon(Icons.edit),
                         ),
                       ),
                       ListTile(
                         title: Text(userModel.email ),
                         trailing: IconButton(
-                          onPressed: (){},
-                          icon: Icon(Icons.edit),
+                          onPressed: (){
+                            showInputDialog(
+                                title: "User Email",
+                                value: userModel.email,
+                                onSaved: (value)async{
+                                  AuthService.updateEmail(value);
+                                  provider.updateProfile(AuthService.user!.uid,
+                                      {'email' : value});
+                                }
+                            );
+                          },
+                          icon: const Icon(Icons.edit),
                         ),
                       ),
                       ListTile(
@@ -94,17 +106,17 @@ class _ProfilePageState extends State<ProfilePage> {
                                 }
                             );
                           },
-                          icon: Icon(Icons.edit),
+                          icon: const Icon(Icons.edit),
                         ),
                       )
                     ],
                   );
                 }
                 if(snapshot.hasError){
-                  return Text("Failed To fetch data");
+                  return const Text("Failed To fetch data");
                 }
 
-                  return Center(
+                  return const  Center(
                     child: CircularProgressIndicator(),
                   );
               },
@@ -130,7 +142,7 @@ class _ProfilePageState extends State<ProfilePage> {
     showDialog(context: context, builder: (context)=>AlertDialog(
       title: Text(title),
       content: Padding(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: TextField(
           controller: txtController,
           decoration: InputDecoration(
@@ -141,11 +153,11 @@ class _ProfilePageState extends State<ProfilePage> {
       actions: [
         TextButton(onPressed: (){
           Navigator.pop(context);
-        }, child: Text("Cancel")),
+        }, child:const Text("Cancel")),
         TextButton(onPressed: (){
           onSaved(txtController.text);
           Navigator.pop(context);
-        }, child: Text("Update")),
+        }, child: const Text("Update")),
       ],
     ));
 

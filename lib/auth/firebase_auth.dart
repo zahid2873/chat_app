@@ -22,5 +22,7 @@ class AuthService{
 
   static Future<void> logOut()=>_auth.signOut();
 
-
+  static Future<void> updateEmail(String email){
+    return _auth.currentUser!.updateEmail(email);
+  }
 }

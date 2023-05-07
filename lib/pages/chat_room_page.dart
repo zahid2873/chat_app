@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../widget/main_drawer.dart';
+
 class ChatRoomPage extends StatefulWidget {
   static const String routeName = '/chat_room';
   const ChatRoomPage({Key? key}) : super(key: key);
@@ -11,6 +13,11 @@ class ChatRoomPage extends StatefulWidget {
 class _ChatRoomPageState extends State<ChatRoomPage> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      drawer: const MainDrawer(),
+      appBar: AppBar(
+        title: const Text("Chat Room"),
+      ),
+    );
   }
 }
