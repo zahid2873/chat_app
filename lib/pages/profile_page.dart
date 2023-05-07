@@ -22,6 +22,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final txtController = TextEditingController();
+  bool  isCamera = true;
   @override
   void dispose() {
     // TODO: implement dispose
@@ -53,12 +54,26 @@ class _ProfilePageState extends State<ProfilePage> {
                     children: [
                       Center(
                         child: userModel.image == null?
-                        Image.asset("images/person.png",width: 100, height: 100,fit: BoxFit.cover,):
-                            Image.network(userModel.image!,width: 100, height: 100,fit: BoxFit.cover,),
+                        Image.asset("images/person.png",width: 200, height: 200,fit: BoxFit.cover,):
+                            Image.network(userModel.image!,width: 200, height: 200,fit: BoxFit.cover,),
                       ),
-                      ElevatedButton.icon(onPressed: (){
-                        _getImage();
-                      }, icon: const Icon(Icons.camera), label: const Text("Update Image")),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ElevatedButton.icon(onPressed: (){
+
+                            _getImage(ImageSource.camera);
+                            },
+                              icon: const Icon(Icons.camera), label: const Text("Camera")
+                          ),
+                          Text("Update Image",style: TextStyle(color: Colors.blue,fontWeight: FontWeight.w800),),
+                          ElevatedButton.icon(onPressed: (){
+                            _getImage(ImageSource.gallery);
+                          },
+                              icon: const Icon(Icons.photo_album), label: const Text("Gallery")
+                          ),
+                        ],
+                      ),
                       const Divider(color: Colors.black,height: 1,),
                       ListTile(
                         title: Text(userModel.name ?? "No Display Name"),
@@ -126,18 +141,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  void _getImage() async {
-    final xFile = await ImagePicker().pickImage(source: ImageSource.camera, imageQuality: 75);
-
-    if(xFile !=null){
-      final downloadUrl = await Provider.of<UserProvider>(context,listen: false).updateImage(File(xFile.path));
-
-      await Provider.of<UserProvider>(context,listen: false).
-      updateProfile(AuthService.user!.uid, {'image' : downloadUrl});
-
-    }
-
-  }
   showInputDialog({required String title, String? value,required Function(String) onSaved}){
     showDialog(context: context, builder: (context)=>AlertDialog(
       title: Text(title),
@@ -162,5 +165,20 @@ class _ProfilePageState extends State<ProfilePage> {
     ));
 
   }
+
+  void _getImage(ImageSource source) async {
+      final xFile = await ImagePicker().pickImage(source: source, imageQuality: 75);
+
+      if(xFile !=null) {
+        final downloadUrl = await Provider.of<UserProvider>(
+            context, listen: false).updateImage(File(xFile.path));
+
+        await Provider.of<UserProvider>(context, listen: false).
+        updateProfile(AuthService.user!.uid, {'image': downloadUrl});
+
+    }
+
+  }
+
 
 }
