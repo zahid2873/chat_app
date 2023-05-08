@@ -82,9 +82,10 @@ class _ProfilePageState extends State<ProfilePage> {
                             showInputDialog(
                               title: "Display Name",
                               value: userModel.name,
-                              onSaved: (value){
+                              onSaved: (value)async{
                                 provider.updateProfile(AuthService.user!.uid,
                                     {'name' : value});
+                                await AuthService.updateDisplayName(value);
                               }
                             );
                           },
@@ -175,6 +176,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
         await Provider.of<UserProvider>(context, listen: false).
         updateProfile(AuthService.user!.uid, {'image': downloadUrl});
+        await AuthService.updatePhotoUrl(downloadUrl);
 
     }
 

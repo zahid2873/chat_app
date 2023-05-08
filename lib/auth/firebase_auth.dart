@@ -22,6 +22,12 @@ class AuthService{
 
   static Future<void> logOut()=>_auth.signOut();
 
+  static Future<void> updateDisplayName(String name)=>
+  _auth.currentUser!.updateDisplayName(name);
+
+  static Future<void> updatePhotoUrl(String url)=>
+      _auth.currentUser!.updatePhotoURL(url);
+
   static Future<void> updateEmail(String email){
     return _auth.currentUser!.updateEmail(email);
   }
