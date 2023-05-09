@@ -18,7 +18,7 @@ class DbHelper{
   _db.collection(_collectionChatRoomMessages).doc().set(messageModel.toMap());
 
   static Stream<QuerySnapshot<Map<String, dynamic>>> getAllChatRoomMessages()=>
-  _db.collection(_collectionChatRoomMessages).snapshots();
+  _db.collection(_collectionChatRoomMessages).orderBy('msgId',descending: true).snapshots();
 
   static Stream<DocumentSnapshot<Map<String, dynamic>>> getUserById(String uid) =>
       _db.collection(_collectionUser).doc(uid).snapshots();
