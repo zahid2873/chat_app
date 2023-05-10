@@ -36,6 +36,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blueGrey,
       drawer: const MainDrawer(),
       appBar: AppBar(
         title: const Text("Chat Room"),
@@ -64,6 +65,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(25),
                           ),
+                          fillColor: Colors.white,
                           hintText: "Type your message"),
                     ),
                   ),
